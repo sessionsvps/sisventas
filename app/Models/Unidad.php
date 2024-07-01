@@ -5,8 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Unidad extends Model
 {
+
+    protected $table = 'unidades';
+
     use HasFactory;
 
     # ESTOS CAMPOS PUEDEN SER ASIGNADOS EN MASA

@@ -322,11 +322,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Categoría',
-                    'url' => '#',
+                    'route' => 'categorias.index',
                 ],
                 [
                     'text' => 'Unidades',
-                    'url' => '#',
+                    'route' => 'unidades.index',
                     // 'submenu' => [
                     //     [
                     //         'text' => 'level_two',
@@ -468,6 +468,36 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Flowbite' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js',
+                ],
+            ],
+        ],
+        'Alertify' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/alertify.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/alertify.min.js',
                 ],
             ],
         ],

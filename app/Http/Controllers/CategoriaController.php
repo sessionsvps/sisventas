@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
-use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class CategoriaController extends Controller
 {
@@ -12,14 +11,21 @@ class CategoriaController extends Controller
 
     public function index(Request $request)
     {
-        $buscarpor = $request->get('buscarpor');
-        $categorias = Categoria::where('estado', '=', '1')->where('descripcion', 'like', '%' . $buscarpor . '%')->paginate($this::PAGINATION);
-        return view('categoria.index', compact('categorias'));
+        // $query = Categoria::where('estado', true);
+
+        // if ($request->has('search')) {
+        //     $query->where('descripcion', 'LIKE', '%' . $request->search . '%');
+        // }
+
+        // $categorias = $query->paginate(5);
+        
+        $categorias = Categoria::where('estado', true)->paginate(5);
+        return view('categorias.index', compact('categorias'));
     }
 
     public function create()
     {
-        return view('categoria.create');
+        return view('categorias.create');
     }
 
     public function store(Request $request)
@@ -33,13 +39,13 @@ class CategoriaController extends Controller
             'estado' => True,
         ]);
 
-        return redirect()->route('categorias.index')->with('datos', 'Registro Nuevo Guardado...!');
+        return redirect()->route('categorias.index')->with('success', 'Registro realizado correctamente');
     }
 
     public function edit(string $id)
     {
-        $docentes = Categoria::findOrFail($id);
-        return view('categoria.edit', compact('categorias'));
+        $categoria = Categoria::findOrFail($id);
+        return view('categorias.edit', compact('categoria'));
     }
 
     public function update(Request $request, string $id)
@@ -52,7 +58,7 @@ class CategoriaController extends Controller
 
         $categoria->update($request->all());
 
-        return redirect()->route('categoria.index')->with('success', 'Categoria actualizado exitosamente.');
+        return redirect()->route('categorias.index')->with('success', 'Actualización realizada correctamente');
     }
 
     public function destroy(string $id)
@@ -60,6 +66,6 @@ class CategoriaController extends Controller
         $categoria = Categoria::findOrFail($id);
         $categoria->estado = '0';
         $categoria->save();
-        return redirect()->route('categoria.index')->with('success', 'Categoria eliminada exitosamente.');
+        return redirect()->route('categorias.index')->with('success', 'Eliminación realizada correctamente');
     }
 }
