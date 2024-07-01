@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Actualizar Unidad')
+@section('title', 'Actualizar Productos')
 
 @section('content_header')
 <div class="mx-20 my-4">
