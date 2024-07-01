@@ -321,7 +321,7 @@ return [
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text' => 'Categoría',
+                    'text' => 'Categorías',
                     'route' => 'categorias.index',
                 ],
                 [
@@ -347,6 +347,10 @@ return [
                     //         ],
                     //     ],
                     // ],
+                ],
+                [
+                    'text' => 'Productos',
+                    'route' => 'productos.index',
                 ],
                 // [
                 //     'text' => 'level_one',

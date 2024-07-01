@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Producto extends Model
 {
     use HasFactory;
 
@@ -13,12 +13,21 @@ class Categoria extends Model
     protected $fillable = [ # $ : indica que fillable es una propiedad de la clase
         'descripcion',
         'estado',
+        'stock',
+        'precio',
+        'id_categoria',
+        'id_unidad',
     ];
 
     public $timestamps = false;
 
-    public function productos()
+    public function categoria()
     {
-        return $this->hasMany(Producto::class);
+        return $this->belongsTo(Categoria::class, 'id_categoria');
+    }
+
+    public function unidad()
+    {
+        return $this->belongsTo(Unidad::class, 'id_unidad');
     }
 }

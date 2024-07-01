@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UnidadController;
+use App\Http\Controllers\ProductoController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,4 +20,5 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('categorias', CategoriaController::class);
     Route::resource('unidades', UnidadController::class);
+    Route::resource('productos', ProductoController::class);
 });
