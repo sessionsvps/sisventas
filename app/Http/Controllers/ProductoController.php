@@ -10,9 +10,15 @@ use Illuminate\Http\Request;
 class ProductoController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::where('estado', true)->paginate(5);
+        $query = Producto::where('estado', true);
+
+        if ($request->has('search')) {
+            $query->where('descripcion', 'like', '%' . $request->search . '%');
+        }
+
+        $productos = $query->paginate(5);
         return view('productos.index', compact('productos'));
     }
 

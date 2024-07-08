@@ -7,18 +7,16 @@ use App\Models\Unidad;
 
 class UnidadController extends Controller
 {
-    
-    public function index()
+
+    public function index(Request $request)
     {
-        // $query = Categoria::where('estado', true);
+        $query = Unidad::where('estado', true);
 
-        // if ($request->has('search')) {
-        //     $query->where('descripcion', 'LIKE', '%' . $request->search . '%');
-        // }
+        if ($request->has('search')) {
+            $query->where('descripcion', 'like', '%' . $request->search . '%');
+        }
 
-        // $categorias = $query->paginate(5);
-
-        $unidades = Unidad::where('estado', true)->paginate(5);
+        $unidades = $query->paginate(5);
         return view('unidades.index', compact('unidades'));
     }
 

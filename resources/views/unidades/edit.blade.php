@@ -3,14 +3,14 @@
 @section('title', 'Actualizar Unidad')
 
 @section('content_header')
-<div class="mx-20 my-4">
+<div class="lg:mx-20 my-4">
     <a href="{{ route('unidades.index') }}"
         class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-800">Volver</a>
 </div>
 @stop
 
 @section('content')
-<div class="mx-20">
+<div class="lg:mx-20">
     <form method="POST" action="{{ route('unidades.update',$unidad->id) }}" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @csrf
         @method('PUT')

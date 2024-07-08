@@ -5,7 +5,7 @@
 @section('content_header')
     @if (session('success'))
     <div id="success-message"
-        class="flex items-center p-4 mx-20 mt-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        class="flex items-center p-4 lg:mx-20 mt-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
         role="alert">
         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             fill="currentColor" viewBox="0 0 20 20">
@@ -18,23 +18,24 @@
         </div>
     </div>
     @endif
-    <div class="flex justify-between items-center mx-20 my-4">
-        <h1>Categorías</h1>
-        {{-- <div class="flex items-center">
-            <form action="{{ route('categorias.index') }}" method="GET">
-                <input type="text" id="search" name="search" placeholder="Buscar..." value="{{ request('search') }}"
-                    class="px-4 py-2 rounded border border-gray-300" oninput="this.form.submit()" />
+    <div class="lg:mx-20 my-4">
+        <h1 class="text-2xl font-bold mb-4">Categorías</h1>
+        <div class="flex justify-between items-center">     
+            <form action="{{ route('categorias.index') }}" method="GET" class="flex items-center">
+                <input type="text" name="search" class="form-input px-4 py-2 h-full rounded-l-md" placeholder="Buscar categoría"
+                    value="{{ request('search') }}">
+                <button type="submit" class="bg-blue-600 text-white px-3 py-2 h-full rounded-r-md hover:bg-blue-700">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+                </button>
             </form>
             <a href="{{ route('categorias.create') }}"
-                class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Añadir</a>
-        </div> --}}
-        <a href="{{ route('categorias.create') }}"
-            class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Añadir</a>
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Añadir</a>
+        </div>
     </div>
 @stop
 
 @section('content')
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-20">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg lg:mx-20">
         <table class="w-full text-md text-center text-gray-500 dark:text-gray-400">
             <thead class="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -76,7 +77,7 @@
             </tbody>
         </table>
     </div>
-    <div class="mx-20 mt-4">
+    <div class="lg:mx-20 mt-4">
         {{ $categorias->links() }}
     </div>
     {{-- <div class="mt-4">

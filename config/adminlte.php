@@ -505,6 +505,16 @@ return [
                 ],
             ],
         ],
+        'FontAwesome' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
+                ],
+            ],
+        ],
     ],
 
     /*
