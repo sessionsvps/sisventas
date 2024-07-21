@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\TipoDocumento;
 use App\Models\User;
+use GuzzleHttp\Client;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategoriaSeeder::class,
             UnidadSeeder::class,
+            TipoDocumentoSeeder::class,
+            ClienteSeeder::class
         ]);
     }
 }

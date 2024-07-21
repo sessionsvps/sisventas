@@ -317,7 +317,7 @@ return [
         ],
         ['header' => 'OPCIONES'],
         [
-            'text' => 'multilevel',
+            'text' => 'REGISTROS',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
                 [
@@ -351,6 +351,10 @@ return [
                 [
                     'text' => 'Productos',
                     'route' => 'productos.index',
+                ],
+                [
+                    'text' => 'Ventas',
+                    'route' => 'ventas.index',
                 ],
                 // [
                 //     'text' => 'level_one',
