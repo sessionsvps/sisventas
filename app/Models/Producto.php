@@ -21,6 +21,11 @@ class Producto extends Model
 
     public $timestamps = false;
 
+    public function detalleVenta()
+    {
+        return $this->belongsTo(DetalleVenta::class, 'id_venta');
+    }
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');

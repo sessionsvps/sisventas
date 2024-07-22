@@ -12,17 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cabecera_ventas', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_venta')->primary();
+            $table->id();
             $table->unsignedBigInteger('id_cliente');
             $table->datetime('fecha_venta');
             $table->unsignedBigInteger('id_tipo');
-            $table->string('nro_doc');
+            $table->string('nro_doc')->nullable();
             $table->float('total');
             $table->float('subtotal');
             $table->float('igv');
             $table->boolean('estado');
             // FK
-            $table->foreign('id_venta')->references('id')->on('detalle_ventas');
             $table->foreign('id_cliente')->references('id')->on('clientes');
             $table->foreign('id_tipo')->references('id')->on('tipo_documentos');
         });

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Producto;
 use App\Models\TipoDocumento;
 use App\Models\User;
 use GuzzleHttp\Client;
@@ -26,7 +27,8 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
             UnidadSeeder::class,
             TipoDocumentoSeeder::class,
-            ClienteSeeder::class
+            ClienteSeeder::class,
+            ProductoSeeder::class
         ]);
     }
 }

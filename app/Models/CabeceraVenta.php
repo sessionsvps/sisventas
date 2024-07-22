@@ -9,21 +9,24 @@ class CabeceraVenta extends Model
 {
     use HasFactory;
 
+    protected $table = 'cabecera_ventas';
+
     public $timestamps = false;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
+    public function detalleVenta()
+    {
+        return $this->belongsTo(DetalleVenta::class, 'id_venta');
+    }
 
     public function cliente()
     {
-        return $this->hasOne(Cliente::class, 'id_cliente','id');
-    }
-
-    public function detallesventas(){
-        return $this->hasMany(DetalleVenta::class, 'id_venta', 'id');
+        return $this->belongsTo(Cliente::class, 'id_cliente');
     }
 
     public function tipo()
     {
-        return $this->hasOne(TipoDocumento::class, 'id_tipo', 'id');
+        return $this->belongsTo(TipoDocumento::class, 'id_tipo');
     }
 }

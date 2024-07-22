@@ -352,15 +352,19 @@ return [
                     'text' => 'Productos',
                     'route' => 'productos.index',
                 ],
-                [
-                    'text' => 'Ventas',
-                    'route' => 'ventas.index',
-                ],
                 // [
                 //     'text' => 'level_one',
                 //     'url' => '#',
                 // ],
-            ],
+                [
+                    'text' => 'Clientes',
+                    'route' => 'clientes.index',
+                ],
+                [
+                    'text' => 'Ventas',
+                    'route' => 'ventas.index',
+                ]
+            ]
         ],
         [
             'text' => 'profile',

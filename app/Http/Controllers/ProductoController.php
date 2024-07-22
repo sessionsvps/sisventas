@@ -12,7 +12,7 @@ class ProductoController extends Controller
 
     public function index(Request $request)
     {
-        $query = Producto::where('estado', true);
+        $query = Producto::where('estado', true)->where('stock', '>', 0);
 
         if ($request->has('search')) {
             $query->where('descripcion', 'like', '%' . $request->search . '%');
@@ -24,8 +24,8 @@ class ProductoController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all();
-        $unidades = Unidad::all();
+        $categorias = Categoria::where('estado',true)->get();
+        $unidades = Unidad::where('estado', true)->get();
         return view('productos.create', compact('categorias', 'unidades'));
     }
 
@@ -53,8 +53,8 @@ class ProductoController extends Controller
 
     public function edit(string $id)
     {
-        $categorias = Categoria::all();
-        $unidades = Unidad::all();
+        $categorias = Categoria::where('estado', true)->get();
+        $unidades = Unidad::where('estado', true)->get();
         $producto = Producto::findOrFail($id);
         return view('productos.edit', compact('producto','categorias','unidades'));
     }

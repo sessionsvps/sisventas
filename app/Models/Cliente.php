@@ -15,6 +15,6 @@ class Cliente extends Model
 
     public function cabeceraVenta()
     {
-        return $this->belongsTo(CabeceraVenta::class, 'id', 'id_cliente');
+        return $this->hasOne(CabeceraVenta::class, 'id_cliente');
     }
 }

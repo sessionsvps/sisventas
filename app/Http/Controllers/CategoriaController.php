@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Categoria;
 
 class CategoriaController extends Controller
-{
-    const PAGINATION = 5; // PARA QUE PAGINEE DE 5 EN 5
+{    
 
     public function index(Request $request)
     {

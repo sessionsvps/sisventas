@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('parametros', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_tipo')->primary();
-            $table->string('numeraciom');
+            $table->unsignedBigInteger('id_tipo');
+            $table->string('numeracion');
             $table->string('serie');
+            // LLAVE PRIMARIA COMPUESTA
+            $table->primary(['numeracion', 'serie']);
             // FK
             $table->foreign('id_tipo')->references('id')->on('tipo_documentos');
         });

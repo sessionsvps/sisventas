@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CabeceraVenta;
+use App\Models\Cliente;
+use App\Models\DetalleVenta;
 use App\Models\Producto;
+use App\Models\TipoDocumento;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 
 class VentaController extends Controller
@@ -10,75 +15,139 @@ class VentaController extends Controller
 
     public function index(Request $request)
     {
-        $query = Producto::where('estado', true);
+        $query = CabeceraVenta::where('estado', true);
 
-        if ($request->has('search')) {
-            $query->where('descripcion', 'like', '%' . $request->search . '%');
-        }
+        // if ($request->has('search')) {
+        //     $query->where('descripcion', 'like', '%' . $request->search . '%');
+        // }
 
-        $productos = $query->paginate(5);
-        return view('productos.index', compact('productos'));
+        $ventas = $query->paginate(5);
+        return view('ventas.index', compact('ventas'));
     }
 
     public function create()
     {
-        $categorias = Categoria::all();
-        $unidades = Unidad::all();
-        return view('productos.create', compact('categorias', 'unidades'));
+        $productos = Producto::where('estado', true)->where('stock', '>', 0)->get();
+        $tipos = TipoDocumento::all();
+        return view('ventas.create', compact('productos', 'tipos'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'descripcion' => 'required|string|max:30',
-            'stock' => 'required|numeric',
-            'precio' => 'required|numeric',
-            'id_categoria' => 'required|exists:categorias,id',
-            'id_unidad' => 'required|exists:unidades,id',
+            'nro_doc' => 'required|string',
+            'fecha_venta' => 'required|date_format:Y-m-d\TH:i',
+            'id_tipo' => 'required|exists:tipo_documentos,id',
+            'id_producto.*' => 'required|exists:productos,id',
+            'cantidad.*' => 'required|integer|min:1',
+            'nombre' => 'nullable|string|max:80',
+            'apellido' => 'nullable|string|max:80',
+            'email' => 'nullable|email|max:100',
+            'direccion' => 'nullable|string|max:100',
         ]);
 
-        Producto::create([
-            'descripcion' => $request->input('descripcion'),
-            'stock' => $request->input('stock'),
-            'precio' => $request->input('precio'),
-            'id_categoria' => $request->input('id_categoria'),
-            'id_unidad' => $request->input('id_unidad'),
-            'estado' => True,
+        // Buscar o crear el cliente
+        $cliente = Cliente::where('nro_doc', $request->input('nro_doc'))->first();
+
+        // Validar que el cliente exista o que se hayan proporcionado los datos necesarios para crear uno nuevo
+        if (!$cliente && (!$request->filled('nombre') || !$request->filled('apellido') || !$request->filled('email') || !$request->filled('direccion'))) {
+            return redirect()->back()->with('error', 'Debe buscar el cliente o ingresar todos los datos para registrarlo.');
+        }
+
+        $productos = $request->input('id_producto');
+        $cantidades = $request->input('cantidad');
+
+        // Primer bucle: Verificación del stock
+        foreach ($productos as $index => $productoId) {
+            $producto = Producto::find($productoId);
+            $cantidad = $cantidades[$index];
+
+            // Verificar el stock
+            if ($producto->stock < $cantidad) {
+                return redirect()->back()->with('error', "No hay stock suficiente de {$producto->descripcion}. Stock disponible: {$producto->stock}, Cantidad solicitada: {$cantidad}");
+            }
+        }
+
+        if (!$cliente) {
+            // Crear nuevo cliente si no existe
+            $cliente = Cliente::create([
+                'nro_doc' => $request->input('nro_doc'),
+                'nombre' => $request->input('nombre'),
+                'apellido' => $request->input('apellido'),
+                'email' => $request->input('email'),
+                'direccion' => $request->input('direccion'),
+            ]);
+        }
+
+        // Crear la cabecera de venta
+        $venta = CabeceraVenta::create([
+            'id_cliente' => $cliente->id,
+            'fecha_venta' => $request->input('fecha_venta'),
+            'id_tipo' => $request->input('id_tipo'),
+            'nro_doc' => $request->input('nro_doc'),
+            'total' => 0, // Se actualizará más adelante
+            'subtotal' => 0, // Se actualizará más adelante
+            'igv' => 0, // Se actualizará más adelante
+            'estado' => true,
         ]);
 
-        return redirect()->route('productos.index')->with('success', 'Registro realizado correctamente');
+        // Calcular el subtotal y crear los detalles de venta
+        $total = 0;
+
+        // Segundo bucle: Crear detalles de venta y actualizar el stock
+        foreach ($productos as $index => $productoId) {
+            $producto = Producto::find($productoId);
+            $cantidad = $cantidades[$index];
+            $precio = $producto->precio;
+
+            // Calcular el total para este producto
+            $total += $precio * $cantidad;
+
+            // Crear el detalle de venta
+            DetalleVenta::create([
+                'id_venta' => $venta->id,
+                'id_producto' => $productoId,
+                'precio' => $precio,
+                'cantidad' => $cantidad,
+            ]);
+
+            // Actualizar el stock del producto
+            $producto->update([
+                'stock' => $producto->stock - $cantidad,
+            ]);
+        }
+
+        // Calcular el IGV y el total
+        $igv = $total * 0.18; // Suponiendo que el IGV es 18%
+        $subtotal = $total - $igv;
+
+        // Actualizar los totales en la cabecera de venta
+        $venta->update([
+            'total' => $total,
+            'subtotal' => $subtotal,
+            'igv' => $igv,
+        ]);
+
+        return redirect()->route('ventas.index')->with('success', 'Registro realizado correctamente');
     }
 
     public function edit(string $id)
     {
-        $categorias = Categoria::all();
-        $unidades = Unidad::all();
-        $producto = Producto::findOrFail($id);
-        return view('productos.edit', compact('producto', 'categorias', 'unidades'));
+        $productos = Producto::where('estado', true)->where('stock', '>', 0)->get();
+        $tipos = TipoDocumento::all();
+        return view('ventas.edit', compact('productos', 'tipos'));
     }
 
     public function update(Request $request, string $id)
     {
-        $producto = Producto::findOrFail($id);
-
-        $request->validate([
-            'descripcion' => 'nullable|string|max:30',
-            'stock' => 'nullable|numeric',
-            'precio' => 'nullable|numeric',
-            'id_categoria' => 'nullable|exists:categorias,id',
-            'id_unidad' => 'nullable|exists:unidades,id',
-        ]);
-
-        $producto->update($request->all());
-
-        return redirect()->route('productos.index')->with('success', 'Actualización realizada correctamente');
+        
     }
 
     public function destroy(string $id)
     {
-        $producto = Producto::findOrFail($id);
-        $producto->estado = '0';
-        $producto->save();
-        return redirect()->route('productos.index')->with('success', 'Eliminación realizada correctamente');
+        $venta = CabeceraVenta::findOrFail($id);
+        $venta->estado = '0';
+        $venta->save();
+        return redirect()->route('ventas.index')->with('success', 'Eliminación realizada correctamente');
     }
 }

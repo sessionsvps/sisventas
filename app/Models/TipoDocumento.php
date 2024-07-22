@@ -10,17 +10,20 @@ class TipoDocumento extends Model
 {
     use HasFactory;
 
+    protected $table = 'tipo_documentos';
+
+
     public $timestamps = false;
 
     protected $fillable = ['descripcion'];
 
     public function cabeceraVenta()
     {
-        return $this->belongsTo(CabeceraVenta::class, 'id', 'id_tipo');
+        return $this->hasOne(CabeceraVenta::class, 'id_tipo');
     }
 
     public function parametro()
     {
-        return $this->belongsTo(Parametro::class, 'id', 'id_tipo');
+        return $this->belongsTo(Parametro::class);
     }
 }

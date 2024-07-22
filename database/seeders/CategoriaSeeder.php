@@ -16,18 +16,8 @@ class CategoriaSeeder extends Seeder
         $categorias = [
             ['descripcion' => 'Tecnología', 'estado' => true],
             ['descripcion' => 'Electrodomésticos', 'estado' => true],
-            ['descripcion' => 'Muebles', 'estado' => true],
             ['descripcion' => 'Ropa', 'estado' => true],
-            ['descripcion' => 'Alimentos', 'estado' => true],
-            ['descripcion' => 'Juguetes', 'estado' => true],
-            ['descripcion' => 'Deportes', 'estado' => true],
-            ['descripcion' => 'Libros', 'estado' => true],
-            ['descripcion' => 'Música', 'estado' => true],
-            ['descripcion' => 'Películas', 'estado' => true],
-            ['descripcion' => 'Joyería', 'estado' => true],
-            ['descripcion' => 'Herramientas', 'estado' => true],
-            ['descripcion' => 'Jardinería', 'estado' => true],
-            ['descripcion' => 'Oficina', 'estado' => true],
+            ['descripcion' => 'Útiles escolares', 'estado' => true],
             ['descripcion' => 'Automóviles', 'estado' => true],
         ];
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ventas')
+@section('title', 'Clientes')
 
 @section('content_header')
     @if (session('success'))
@@ -19,16 +19,16 @@
     </div>
     @endif
     <div class="lg:mx-20 my-4">
-        <h1 class="text-2xl font-bold mb-4">Ventas</h1>
-        <div class="flex justify-between items-center">
-            <form action="{{ route('ventas.index') }}" method="GET" class="flex items-center">
-                <input type="text" name="search" class="form-input px-4 py-2 h-full rounded-l-md"
-                    placeholder="Buscar venta" value="{{ request('search') }}">
+        <h1 class="text-2xl font-bold mb-4">Clientes</h1>
+        <div class="flex justify-between items-center">     
+            <form action="{{ route('clientes.index') }}" method="GET" class="flex items-center">
+                <input type="text" name="search" class="form-input px-4 py-2 h-full rounded-l-md" placeholder="Buscar cliente"
+                    value="{{ request('search') }}">
                 <button type="submit" class="bg-blue-600 text-white px-3 py-2 h-full rounded-r-md hover:bg-blue-700">
                     <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
                 </button>
             </form>
-            <a href="{{ route('ventas.create') }}"
+            <a href="{{ route('clientes.create') }}"
                 class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Añadir</a>
         </div>
     </div>
@@ -43,19 +43,19 @@
                         ID
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Cliente
+                        Nombre(s)
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Apellidos
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Documento
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Fecha
+                        Email
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Subtotal
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Total
+                        Dirección
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Acciones
@@ -63,31 +63,31 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($ventas as $venta)
+                @forelse ($clientes as $cliente)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ $venta->id }}
+                        {{ $cliente->id }}
                     </th>
                     <td class="px-6 py-4">
-                        {{ $venta->cliente->nombre . ' ' . $venta->cliente->apellido }}
+                        {{ $cliente->nombre }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $venta->tipo->descripcion }}
+                        {{ $cliente->apellido }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $venta->fecha_venta }}
+                        {{ $cliente->nro_doc }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $venta->subtotal }}
+                        {{ $cliente->email }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $venta->total }}
+                        {{ $cliente->direccion }}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-center">
-                            <a href="{{ route('ventas.edit', $venta->id) }}"
+                            <a href="{{ route('clientes.edit', $cliente->id) }}"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <button type="button" onclick="confirmDelete('{{ $venta->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button>
+                            {{-- <button type="button" onclick="confirmDelete('{{ $cliente->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button> --}}
                         </div>
                     </td>
                 </tr>
@@ -102,11 +102,8 @@
         </table>
     </div>
     <div class="lg:mx-20 mt-4">
-        {{ $ventas->links() }}
+        {{ $clientes->links() }}
     </div>
-    {{-- <div class="mt-4">
-        {{ $categorias->appends(['search' => request('search')])->links() }}
-    </div> --}}
 @stop
 
 @section('css')
@@ -119,25 +116,25 @@
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-                        setTimeout(function() {
-                            var successMessage = document.getElementById('success-message');
-                            if (successMessage) {
-                                successMessage.style.transition = 'opacity 0.5s ease';
-                                successMessage.style.opacity = '0';
-                                setTimeout(function() {
-                                    successMessage.remove();
-                                }, 500); // Espera el tiempo de la transición para eliminar el elemento
-                            }
-                        }, 3000); // 3 segundos antes de empezar a desvanecer
-                    });
+                    setTimeout(function() {
+                        var successMessage = document.getElementById('success-message');
+                        if (successMessage) {
+                            successMessage.style.transition = 'opacity 0.5s ease';
+                            successMessage.style.opacity = '0';
+                            setTimeout(function() {
+                                successMessage.remove();
+                            }, 500); // Espera el tiempo de la transición para eliminar el elemento
+                        }
+                    }, 3000); // 3 segundos antes de empezar a desvanecer
+                });
     </script>
     <script>
         function confirmDelete(id){
-                alertify.confirm("¿Seguro que quieres eliminar el venta?",
+                alertify.confirm("¿Seguro que quieres eliminar la categoría?",
                 function(){
                     let form = document.createElement('form');
                     form.method = 'POST';
-                    form.action = '/ventas/' + id;
+                    form.action = '/clientes/' + id;
                     form.innerHTML = '@csrf @method("DELETE")';
                     document.body.appendChild(form);
                     form.submit();

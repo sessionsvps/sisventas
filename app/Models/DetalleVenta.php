@@ -9,17 +9,19 @@ class DetalleVenta extends Model
 {
     use HasFactory;
 
+    protected $table = 'detalle_ventas';
+
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
-    public function cabeceraVenta()
+    public function cabeceraVentas()
     {
-        return $this->belongsTo(CabeceraVenta::class, 'id', 'id_venta');
+        return $this->hasMany(CabeceraVenta::class, 'id_venta');
     }
 
     public function productos()
     {
-        return $this->hasMany(Producto::class, 'id_producto', 'id');
+        return $this->hasMany(Producto::class, 'id_producto');
     }
 }

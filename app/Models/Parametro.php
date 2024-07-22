@@ -11,10 +11,10 @@ class Parametro extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id_tipo', 'numeracion','serie'];
+    protected $fillable = ['numeracion','serie'];
 
     public function tipodocumento()
     {
-        return $this->hasOne(TipoDocumento::class, 'id_tipo', 'id');
+        return $this->hasOne(TipoDocumento::class);
     }
 }

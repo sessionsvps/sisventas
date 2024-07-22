@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detalle_ventas', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id_venta');
             $table->unsignedBigInteger('id_producto');
             $table->float('precio');
             $table->integer('cantidad');
             // LLAVE PRIMARIA COMPUESTA
-            $table->primary(['id', 'id_producto']);
+            $table->primary(['id_venta', 'id_producto']);
             // FK
+            $table->foreign('id_venta')->references('id')->on('cabecera_ventas');
             $table->foreign('id_producto')->references('id')->on('productos');
         });
     }

@@ -13,11 +13,15 @@ class UnidadSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 15; $i++) {
-            Unidad::create([
-                'descripcion' => 'unidad ' . $i,
-                'estado' => true,
-            ]);
+        $unidades = [
+            ['descripcion' => 'Unidad', 'estado' => true],
+            ['descripcion' => 'Par', 'estado' => true],
+            ['descripcion' => 'Docena', 'estado' => true],
+            ['descripcion' => 'Pack', 'estado' => true],
+        ];
+
+        foreach ($unidades as $unidad) {
+            Unidad::create($unidad);
         }
     }
 }
