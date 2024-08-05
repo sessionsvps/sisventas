@@ -11,23 +11,9 @@ class Parametro extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_tipo';
     public $timestamps = false;
-
-    protected $guarded = [];
-
-    public static function ActualizarNumero($id_tipo, $numeracion)
-    {
-        try {
-            DB::table('parametros')
-            ->where('id_tipo', $id_tipo)
-                ->update([
-                    'numeracion' => $numeracion
-                ]);
-            return true;
-        } catch (Exception $ex) {
-            return false;
-        }
-    }    
+    protected $guarded = []; 
 
     public function tipodocumento()
     {

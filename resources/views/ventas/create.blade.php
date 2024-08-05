@@ -110,7 +110,8 @@
                         </select>
                         <input type="number" name="cantidad[]"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 ml-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Cantidad" required />
+                            placeholder="Cantidad" required pattern="\d*"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
                         <button type="button" class="ml-4 text-red-700 hover:text-red-800"
                             onclick="removeProduct(this)">Eliminar</button>
                     </div>
@@ -201,9 +202,19 @@
         }
     
         if (numeracion !== 'null') {
-            document.getElementById('numeracion').value = numeracion;
+            numeracion = parseInt(numeracion, 10);
+            if (numeracion < 10) {
+                numeracion='0000' + numeracion; 
+            } else if (numeracion < 100) { 
+                numeracion='000' + numeracion; 
+            } else if (numeracion < 1000) { 
+                numeracion='00' + numeracion; 
+            } else if (numeracion < 10000) { 
+                numeracion='0' + numeracion; 
+            } 
+            document.getElementById('numeracion').value=numeracion;
         } else {
-            document.getElementById('numeracion').value = 'No disponible';
+            document.getElementById('numeracion').value='No disponible';
         }
     });
     </script>

@@ -101,11 +101,11 @@ class VentaController extends Controller
             'estado' => true,
         ]);
 
-        // Obtener parametro y actualizar
-        // $parametro = Parametro::where('id_tipo', $request->input('id_tipo'))->first();
-        // $nueva_numeracion = (int)$parametro->numeracion + 1;
-        // $parametro->numeracion = $nueva_numeracion;
-        // $parametro->save();
+        //Obtener parametro y actualizar
+        $parametro = Parametro::where('id_tipo', $request->input('id_tipo'))->first();
+        $nueva_numeracion = (int)$parametro->numeracion + 1;
+        $parametro->numeracion = $nueva_numeracion;
+        $parametro->save();
 
         // Calcular el subtotal y crear los detalles de venta
         $total = 0;
