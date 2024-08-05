@@ -80,23 +80,23 @@
                     required />
             </div>
             <div class="mb-4">
-                <label for="id_tipo" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Tipo de
-                    Documento</label>
+                <label for="id_tipo" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Tipo de Documento</label>
                 <select id="id_tipo" name="id_tipo"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required>
+                    <option value="" disabled selected>Seleccione un tipo</option>
                     @foreach($tipos as $tipo)
                     <option value="{{ $tipo->id }}">{{ $tipo->descripcion }}</option>
                     @endforeach
                 </select>
             </div>
-            {{-- <div class="mb-4">
-                <label for="nro_doc" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Número de
+            <div class="mb-4">
+                <label for="numeracion" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Número de
                     Documento</label>
-                <input type="text" id="nro_doc" name="nro_doc"
+                <input type="text" id="numeracion" name="numeracion"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Número de Documento" required />
-            </div> --}}
+                    placeholder="Número de Documento" disabled/>
+            </div>
             <label for="id_tipo" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Producto(s)</label>
             <div>
                 <div id="productos_container">
@@ -188,5 +188,23 @@
                 }
             }, 3000); // 3 segundos antes de empezar a desvanecer
         });
+    </script>
+    <script>
+        document.getElementById('id_tipo').addEventListener('change', function() {
+        let id_tipo = this.value;
+        let numeracion = '';
+    
+        if (id_tipo == 1) {
+            numeracion = {{ $parametro_1 ? $parametro_1->numeracion : 'null' }};
+        } else if (id_tipo == 2) {
+            numeracion = {{ $parametro_2 ? $parametro_2->numeracion : 'null' }};
+        }
+    
+        if (numeracion !== 'null') {
+            document.getElementById('numeracion').value = numeracion;
+        } else {
+            document.getElementById('numeracion').value = 'No disponible';
+        }
+    });
     </script>
 @stop

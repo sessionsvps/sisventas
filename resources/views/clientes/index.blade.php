@@ -87,7 +87,7 @@
                         <div class="flex justify-center">
                             <a href="{{ route('clientes.edit', $cliente->id) }}"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            {{-- <button type="button" onclick="confirmDelete('{{ $cliente->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button> --}}
+                            <button type="button" onclick="confirmDelete('{{ $cliente->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button>
                         </div>
                     </td>
                 </tr>

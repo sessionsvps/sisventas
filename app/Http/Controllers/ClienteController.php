@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 
+use function Laravel\Prompts\alert;
+
 class ClienteController extends Controller
 {
 
     public function index(Request $request)
     {
-        $query = Cliente::query();
+        $query = Cliente::where('estado',true);
 
         if ($request->has('search')) {
             $query->where('nombre', 'like', '%' . $request->search . '%');
@@ -93,7 +95,11 @@ class ClienteController extends Controller
         $cliente = Cliente::where('nro_doc', $nro_doc)->first();
 
         if ($cliente) {
-            return response()->json(['exists' => true, 'cliente' => $cliente]);
+            if ($cliente->estado){
+                return response()->json(['exists' => true, 'cliente' => $cliente]);
+            }else{
+                
+            }
         } else {
             return response()->json(['exists' => false]);
         }

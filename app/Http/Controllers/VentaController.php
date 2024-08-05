@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CabeceraVenta;
 use App\Models\Cliente;
 use App\Models\DetalleVenta;
+use App\Models\Parametro;
 use App\Models\Producto;
 use App\Models\TipoDocumento;
 use GuzzleHttp\Handler\Proxy;
@@ -29,7 +30,9 @@ class VentaController extends Controller
     {
         $productos = Producto::where('estado', true)->where('stock', '>', 0)->get();
         $tipos = TipoDocumento::all();
-        return view('ventas.create', compact('productos', 'tipos'));
+        $parametro_1 = Parametro::where('id_tipo', 1)->first();
+        $parametro_2 = Parametro::where('id_tipo', 2)->first();
+        return view('ventas.create', compact('productos', 'tipos','parametro_1','parametro_2'));
     }
 
     public function store(Request $request)
@@ -46,8 +49,15 @@ class VentaController extends Controller
             'direccion' => 'nullable|string|max:100',
         ]);
 
+
+
         // Buscar o crear el cliente
         $cliente = Cliente::where('nro_doc', $request->input('nro_doc'))->first();
+
+        // Validar cliente inactivo
+        if (!$cliente->estado){
+            return redirect()->back()->with('error', 'El cliente está inactivo');
+        }
 
         // Validar que el cliente exista o que se hayan proporcionado los datos necesarios para crear uno nuevo
         if (!$cliente && (!$request->filled('nombre') || !$request->filled('apellido') || !$request->filled('email') || !$request->filled('direccion'))) {
@@ -84,12 +94,18 @@ class VentaController extends Controller
             'id_cliente' => $cliente->id,
             'fecha_venta' => $request->input('fecha_venta'),
             'id_tipo' => $request->input('id_tipo'),
-            'nro_doc' => $request->input('nro_doc'),
+            'nro_doc' => $request->input('numeracion'),
             'total' => 0, // Se actualizará más adelante
             'subtotal' => 0, // Se actualizará más adelante
             'igv' => 0, // Se actualizará más adelante
             'estado' => true,
         ]);
+
+        // Obtener parametro y actualizar
+        // $parametro = Parametro::where('id_tipo', $request->input('id_tipo'))->first();
+        // $nueva_numeracion = (int)$parametro->numeracion + 1;
+        // $parametro->numeracion = $nueva_numeracion;
+        // $parametro->save();
 
         // Calcular el subtotal y crear los detalles de venta
         $total = 0;
